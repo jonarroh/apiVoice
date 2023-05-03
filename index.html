@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Servidor WebSocket en JavaScript</title>
+	</head>
+	<body>
+		<div>
+			<input
+				type="text"
+				id="mensaje"
+				placeholder="Escribe un mensaje"
+			/>
+			<p id="response"></p>
+			<button onclick="enviarMensaje()">Enviar</button>
+			<audio controls></audio>
+		</div>
+		<script>
+			const BASE_URL = 'https://afc4-34-83-98-233.ngrok-free.app';
+			async function enviarMensaje() {
+				const mensaje = document.getElementById('mensaje').value;
+				const response = await fetch(`${BASE_URL}/voice`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ text: mensaje })
+				});
+				const data = await response.text();
+				console.log(data);
+				document.querySelector(
+					'audio'
+				).src = `data:audio/wav;base64,${data}`;
+			}
+		</script>
+	</body>
+</html>
